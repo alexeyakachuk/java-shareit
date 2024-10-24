@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user.controller;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
@@ -9,6 +10,7 @@ import ru.practicum.shareit.user.service.UserService;
 /**
  * TODO Sprint add-controllers.
  */
+@Slf4j
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
@@ -33,4 +35,14 @@ public class UserController {
     public void deleteUser(@PathVariable long id) {
         userService.delete(id);
     }
+
+//    @PatchMapping
+//    public UserDto update(User newUser) {
+//        return userService.update(newUser);
+//    }
+@PatchMapping("/{id}")
+public UserDto update(@PathVariable long id, @Valid @RequestBody User newUser ) {
+    newUser .setId(id); // Устанавливаем id из пути
+    return userService.update(newUser );
+}
 }
