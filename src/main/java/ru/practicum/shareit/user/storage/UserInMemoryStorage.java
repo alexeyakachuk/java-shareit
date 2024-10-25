@@ -26,7 +26,7 @@ public class UserInMemoryStorage implements UserStorage{
     public User create(User user) {
 
         if (emails.contains(user.getEmail())) {
-            throw new DuplicateException("");
+            throw new DuplicateException("Такой email уже есть");
         }
 
         long nextId = getNextId();
@@ -56,6 +56,7 @@ public class UserInMemoryStorage implements UserStorage{
     @Override
     public User update(@Valid @RequestBody User newUser) {
         checkId(newUser);
+
         Long id = newUser.getId();
         User oldUser = users.get(id);
         updateFields(oldUser , newUser );
@@ -79,6 +80,9 @@ public class UserInMemoryStorage implements UserStorage{
         }
         if (!users.containsKey(newUser.getId())) {
             throw new NotFoundException("Пользователя с таким id " + newUser.getId() + " нет");
+        }
+        if (emails.contains(newUser.getEmail())) {
+            throw new DuplicateException("Такой email уже есть");
         }
     }
 
