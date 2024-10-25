@@ -1,10 +1,8 @@
 package ru.practicum.shareit.user.storage;
 
-import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.practicum.shareit.exception.DuplicateException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
@@ -54,35 +52,38 @@ public class UserInMemoryStorage implements UserStorage{
     }
 
     @Override
-    public User update(@Valid @RequestBody User newUser) {
-        checkId(newUser);
+    public User update(User newUser) {
 
         Long id = newUser.getId();
         User oldUser = users.get(id);
-        updateFields(oldUser , newUser );
+        validate(newUser, oldUser);
+        updateFields(oldUser, newUser);
         users.put(id, oldUser);
+
         return oldUser;
     }
 
     private void updateFields(User oldUser, User newUser) {
+
         if (newUser.getName() != null) {
             oldUser.setName(newUser.getName());
         }
         if (newUser.getEmail() != null) {
             oldUser.setEmail(newUser.getEmail());
         }
-
     }
 
-    private void checkId(User newUser) {
+    private void validate(User newUser, User oldUser) {
         if (newUser.getId() == null) {
             throw new ValidationException("Id пользователя должен быть указан");
         }
         if (!users.containsKey(newUser.getId())) {
             throw new NotFoundException("Пользователя с таким id " + newUser.getId() + " нет");
         }
-        if (emails.contains(newUser.getEmail())) {
-            throw new DuplicateException("Такой email уже есть");
+        if (!oldUser.getEmail().equals(newUser.getEmail())) {
+            if (emails.contains(newUser.getEmail())) {
+                throw new DuplicateException("Такой email уже есть");
+            }
         }
     }
 
