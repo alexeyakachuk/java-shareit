@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user.service;
 
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -10,20 +9,20 @@ import ru.practicum.shareit.user.storage.UserStorage;
 
 @Slf4j
 @Service
-public class UserService {
+public class UserServiceImpl {
     private final UserStorage userStorage;
 
-    public UserService(UserStorage userStorage) {
+    public UserServiceImpl(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
-    public UserDto create(@Valid User newUser) {
+    public UserDto create(User newUser) {
         User user = userStorage.create(newUser);
         UserDto userDto = UserMapper.toUserDto(user);
         return userDto;
     }
 
-    public UserDto find(long id) {
+    public UserDto find(Long id) {
         User user = userStorage.find(id);
         UserDto userDto = UserMapper.toUserDto(user);
         return userDto;

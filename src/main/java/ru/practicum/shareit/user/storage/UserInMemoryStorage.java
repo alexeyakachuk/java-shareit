@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.DuplicateException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class UserInMemoryStorage implements UserStorage{
     }
 
     @Override
-    public User find(long id) {
+    public User find(Long id) {
         if (!users.containsKey(id)) {
             throw new NotFoundException("Пользователя с таким id " + id + " нет");
         }
@@ -45,7 +46,7 @@ public class UserInMemoryStorage implements UserStorage{
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         users.remove(id);
         log.info("Создан id {} удален ", id);
 
@@ -62,6 +63,7 @@ public class UserInMemoryStorage implements UserStorage{
 
         return oldUser;
     }
+
 
     private void updateFields(User oldUser, User newUser) {
 
