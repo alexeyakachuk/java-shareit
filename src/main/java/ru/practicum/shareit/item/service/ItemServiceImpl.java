@@ -21,31 +21,49 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl {
     private final ItemStorage itemStorage;
     private final UserStorage userStorage;
+
     public ItemServiceImpl(ItemStorage itemStorage, UserStorage userStorage) {
         this.itemStorage = itemStorage;
         this.userStorage = userStorage;
     }
 
-
     public ItemDto create(Long userId, Item newItem) {
-        Map<Long, User> users = userStorage.getUsers();
-        User owner = users.get(userId);
+        User owner = userStorage.find(userId);
         newItem.setOwner(owner);
-        // Проверка на наличие пользователя с указанным userId
-        if (!users.containsKey(userId)) {
-            throw new NotFoundException(String.format("Пользователь с id %d не найден", userId));
+        Item item = itemStorage.create(newItem);
+        return ItemMapper.toItemDto(item);
+    }
+
+    public ItemDto update(Long id, Long userId, Item updatedItem) {
+        // Проверяем, существует ли предмет
+        Item item = itemStorage.find(id);
+
+        // Проверяем, является ли пользователь владельцем
+        if (!item.getOwner().getId().equals(userId)) {
+            throw new ValidationException("Только владелец может обновить вещь");
         }
 
+        // Передаем обновленный предмет в хранилище
+        Item updatedItemInStorage = itemStorage.update(id, updatedItem);
 
-        // Создание нового элемента
-        Item item = itemStorage.create(newItem);
-        ItemDto itemDto = ItemMapper.toItemDto(item);
-        return itemDto;
+        // Возвращаем обновленный предмет в виде DTO
+        return ItemMapper.toItemDto(updatedItemInStorage);
     }
 
     public ItemDto find(long id) {
         Item item = itemStorage.find(id);
-        ItemDto itemDto = ItemMapper.toItemDto(item);
-        return itemDto;
+        return ItemMapper.toItemDto(item);
+    }
+
+    public List<ItemDto> findAllByOwner(Long ownerId) {
+        return itemStorage.findAllByOwner(ownerId).stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ItemDto> search(String text) {
+        return itemStorage.search(text).stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 }

@@ -8,7 +8,8 @@ public class ItemMapper {
         return ItemDto.builder()
                 .name(item.getName())
                 .description(item.getDescription())
-                .available(item.isAvailable())
+                .available(item.getAvailable())
+//                .owner(item.getOwner())
                 .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
                 .build();
     }
