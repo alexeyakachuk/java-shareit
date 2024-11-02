@@ -20,6 +20,7 @@ import java.util.Set;
 public class UserInMemoryStorage implements UserStorage{
     private final Map<Long, User> users = new HashMap<>();
     private final Set<String> emails = new HashSet<>();
+    private static Long id = 0L;
 
     @Override
     public User create(User user) {
@@ -90,11 +91,6 @@ public class UserInMemoryStorage implements UserStorage{
     }
 
     private long getNextId() {
-        long currentMaxId = users.keySet()
-                .stream()
-                .mapToLong(id -> id)
-                .max()
-                .orElse(0);
-        return ++currentMaxId;
+        return id++;
     }
 }
