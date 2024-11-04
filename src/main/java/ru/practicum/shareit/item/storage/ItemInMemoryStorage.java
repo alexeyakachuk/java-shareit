@@ -35,6 +35,7 @@ public class ItemInMemoryStorage implements ItemStorage {
         long nextId = getNextId();
         item.setId(nextId);
         items.put(item.getId(), item);
+        log.info("Создана вещь с id {}", nextId);
         return item;
     }
 
@@ -82,7 +83,7 @@ public class ItemInMemoryStorage implements ItemStorage {
             return Collections.emptyList();
         }
         return items.values().stream()
-                .filter(item -> item.getAvailable() &&
+                .filter(item -> item.getAvailable() != null && item.getAvailable() != false &&
                         (item.getName().toLowerCase().contains(text.toLowerCase()) ||
                                 item.getDescription().toLowerCase().contains(text.toLowerCase())))
                 .collect(Collectors.toList());
