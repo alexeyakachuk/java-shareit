@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
@@ -11,7 +12,6 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -39,11 +39,15 @@ public class ItemServiceImpl {
 
         // Проверяем, является ли пользователь владельцем
         if (!item.getOwner().getId().equals(userId)) {
-            throw new ValidationException("Только владелец может обновить вещь");
+            throw new NotFoundException("Только владелец может обновить вещь");
         }
 
         // Передаем обновленный предмет в хранилище
         Item updatedItemInStorage = itemStorage.update(id, updatedItem);
+//TODO показать Андрею
+        if (updatedItemInStorage.getAvailable() == null) {
+            return ItemMapper.toItemDto1(updatedItemInStorage);
+        }
 
         // Возвращаем обновленный предмет в виде DTO
         return ItemMapper.toItemDto(updatedItemInStorage);
