@@ -16,7 +16,7 @@ import java.util.Set;
 @Slf4j
 @Component
 @Getter
-public class UserInMemoryStorage implements UserStorage{
+public class UserInMemoryStorage implements UserStorage {
     private final Map<Long, User> users = new HashMap<>();
     private final Set<String> emails = new HashSet<>();
     private static Long id = 0L;
