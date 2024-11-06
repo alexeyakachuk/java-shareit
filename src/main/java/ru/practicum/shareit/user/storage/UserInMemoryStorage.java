@@ -64,7 +64,6 @@ public class UserInMemoryStorage implements UserStorage{
         return oldUser;
     }
 
-
     private void updateFields(User oldUser, User newUser) {
 
         if (newUser.getName() != null) {

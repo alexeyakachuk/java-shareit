@@ -58,7 +58,6 @@ public class ItemInMemoryStorage implements ItemStorage {
             existingItem.setAvailable(updatedItem.getAvailable());
         }
 
-        // Возвращаем обновленный предмет
         return existingItem;
     }
 
@@ -83,17 +82,18 @@ public class ItemInMemoryStorage implements ItemStorage {
             return Collections.emptyList();
         }
         return items.values().stream()
-                .filter(item -> item.getAvailable() != null && item.getAvailable() != false &&
+                .filter(item -> item.getAvailable() != null && item.getAvailable() &&
                         (item.getName().toLowerCase().contains(text.toLowerCase()) ||
                                 item.getDescription().toLowerCase().contains(text.toLowerCase())))
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void delete(Long id) {
+        items.remove(id);
+    }
+
     private long getNextId() {
-//        return items.keySet().stream()
-//                .mapToLong(id -> id)
-//                .max()
-//                .orElse(0) + 1;
         return id++;
     }
 }

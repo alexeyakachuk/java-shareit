@@ -13,7 +13,6 @@ import ru.practicum.shareit.user.model.User;
 @Builder
 public class Item {
     private Long id;
-//    @NotNull
     private String name;
     @NotNull
     private String description;

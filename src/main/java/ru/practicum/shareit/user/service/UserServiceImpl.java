@@ -9,36 +9,35 @@ import ru.practicum.shareit.user.storage.UserStorage;
 
 @Slf4j
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
     private final UserStorage userStorage;
 
     public UserServiceImpl(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
+    @Override
     public UserDto create(User newUser) {
         User user = userStorage.create(newUser);
         UserDto userDto = UserMapper.toUserDto(user);
         return userDto;
     }
 
+    @Override
     public UserDto find(Long id) {
         User user = userStorage.find(id);
         UserDto userDto = UserMapper.toUserDto(user);
         return userDto;
     }
 
-    public void delete(long id) {
+    @Override
+    public void delete(Long id) {
         userStorage.delete(id);
     }
 
+    @Override
     public UserDto update(User newUser) {
-//        UserDto userDto = UserMapper.toUserDto(newUser);
-//        return userDto;
-//        User updateUser = userStorage.update(newUser);
-//        UserDto userDto = UserMapper.toUserDto(updateUser);
-//        return userDto;
-        User updatedUser  = userStorage.update(newUser ); // Передаем новый объект в хранилище
-        return UserMapper.toUserDto(updatedUser );
+        User updatedUser = userStorage.update(newUser); // Передаем новый объект в хранилище
+        return UserMapper.toUserDto(updatedUser);
     }
 }

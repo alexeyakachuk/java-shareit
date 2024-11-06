@@ -36,10 +36,6 @@ public class UserController {
         userService.delete(id);
     }
 
-    //    @PatchMapping
-//    public UserDto update(User newUser) {
-//        return userService.update(newUser);
-//    }
     @PatchMapping("/{id}")
     public UserDto update(@PathVariable long id, @RequestBody User newUser) { // убрал @Valid
         newUser.setId(id);

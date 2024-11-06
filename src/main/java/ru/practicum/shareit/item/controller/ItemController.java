@@ -71,4 +71,9 @@ public class ItemController {
     public List<ItemDto> search(@RequestParam String text) {
         return itemService.search(text);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteItem(@PathVariable long itemId) {
+        itemService.delete(itemId);
+    }
 }
