@@ -26,22 +26,24 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto create(Long userId, Item newItem) {
+    public ItemDto create(Long userId, ItemDto newItemDto) {
         User owner = userStorage.find(userId);
+        Item newItem = ItemMapper.toItem(newItemDto);
         newItem.setOwner(owner);
         Item item = itemStorage.create(newItem);
         return ItemMapper.toItemDto(item);
     }
 
     @Override
-    public ItemDto update(Long id, Long userId, Item updatedItem) {
+    public ItemDto update(Long id, Long userId, ItemDto updatedItemDto) {
 
         Item item = itemStorage.find(id);
+
 
         if (!item.getOwner().getId().equals(userId)) {
             throw new NotFoundException("Только владелец может обновить вещь");
         }
-
+        Item updatedItem = ItemMapper.toItem(updatedItemDto);
         Item updatedItemInStorage = itemStorage.update(id, updatedItem);
 
         return ItemMapper.toItemDto(updatedItemInStorage);

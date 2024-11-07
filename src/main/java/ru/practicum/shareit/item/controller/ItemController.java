@@ -28,24 +28,24 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto create(HttpServletRequest request, @Valid @RequestBody Item newItem) {
-        String header = request.getHeader("X-Sharer-User-Id");
-        if (StringUtils.isEmpty(header)) {
-            throw new ValidationException("Не передан userId");
-        }
-        long userId = Long.parseLong(header);
+    public ItemDto create(@RequestHeader("X-Sharer-User-Id") long userId, @RequestBody ItemDto newItemDto) {
+//        String header = request.getHeader("X-Sharer-User-Id");
+//        if (StringUtils.isEmpty(header)) {
+//            throw new ValidationException("Не передан userId");
+//        }
+//        long userId = Long.parseLong(header);
 
-        return itemService.create(userId, newItem);
+        return itemService.create(userId, newItemDto);
     }
 
     @PatchMapping("/{id}")
-    public ItemDto update(@PathVariable Long id, HttpServletRequest request, @RequestBody Item updatedItem) {
-        String header = request.getHeader("X-Sharer-User-Id");
-        if (StringUtils.isEmpty(header)) {
-            throw new ValidationException("Не передан userId");
-        }
-        long userId = Long.parseLong(header);
-        return itemService.update(id, userId, updatedItem);
+    public ItemDto update(@PathVariable Long id, @RequestHeader("X-Sharer-User-Id") long userId, @RequestBody ItemDto updatedItemDto) {
+//        String header = request.getHeader("X-Sharer-User-Id");
+//        if (StringUtils.isEmpty(header)) {
+//            throw new ValidationException("Не передан userId");
+//        }
+//        long userId = Long.parseLong(header);
+        return itemService.update(id, userId, updatedItemDto);
     }
 
     @GetMapping("/{id}")

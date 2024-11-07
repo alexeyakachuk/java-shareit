@@ -28,6 +28,9 @@ public class ItemInMemoryStorage implements ItemStorage {
         if (item.getOwner() == null) {
             throw new NotFoundException("У вещи должен быть владелиц");
         }
+        if (item.getDescription() == null) {
+            throw new ValidationException("У вещи должно быть описание");
+        }
         if (item.getAvailable() == null) {
             throw new ValidationException("");
         }
