@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -13,8 +12,6 @@ import ru.practicum.shareit.user.storage.UserStorage;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@Slf4j
 @Service
 public class ItemServiceImpl implements ItemService {
     private final ItemStorage itemStorage;

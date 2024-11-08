@@ -50,7 +50,6 @@ public class ItemInMemoryStorage implements ItemStorage {
 
         Item existingItem = items.get(id);
 
-        // Обновляем только поля, которые были переданы в updatedItem
         if (updatedItem.getName() != null && !updatedItem.getName().isEmpty()) {
             existingItem.setName(updatedItem.getName());
         }

@@ -1,20 +1,11 @@
 package ru.practicum.shareit.item.controller;
 
-import io.micrometer.common.util.StringUtils;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemServiceImpl;
 
 import java.util.List;
-
-/**
- * TODO Sprint add-controllers.
- */
 
 @Slf4j
 @RestController
@@ -29,41 +20,22 @@ public class ItemController {
 
     @PostMapping
     public ItemDto create(@RequestHeader("X-Sharer-User-Id") long userId, @RequestBody ItemDto newItemDto) {
-//        String header = request.getHeader("X-Sharer-User-Id");
-//        if (StringUtils.isEmpty(header)) {
-//            throw new ValidationException("Не передан userId");
-//        }
-//        long userId = Long.parseLong(header);
-
         return itemService.create(userId, newItemDto);
     }
 
     @PatchMapping("/{id}")
-    public ItemDto update(@PathVariable Long id, @RequestHeader("X-Sharer-User-Id") long userId, @RequestBody ItemDto updatedItemDto) {
-//        String header = request.getHeader("X-Sharer-User-Id");
-//        if (StringUtils.isEmpty(header)) {
-//            throw new ValidationException("Не передан userId");
-//        }
-//        long userId = Long.parseLong(header);
+    public ItemDto update(@PathVariable Long id, @RequestHeader("X-Sharer-User-Id") long userId,
+                          @RequestBody ItemDto updatedItemDto) {
         return itemService.update(id, userId, updatedItemDto);
     }
 
     @GetMapping("/{id}")
-    public ItemDto find(HttpServletRequest request, @PathVariable Long id) {
-        String header = request.getHeader("X-Sharer-User-Id");
-        if (StringUtils.isEmpty(header)) {
-            throw new ValidationException("Не передан userId");
-        }
+    public ItemDto find(@PathVariable Long id) {
         return itemService.find(id);
     }
 
     @GetMapping
-    public List<ItemDto> findAll(HttpServletRequest request) {
-        String header = request.getHeader("X-Sharer-User-Id");
-        if (StringUtils.isEmpty(header)) {
-            throw new ValidationException("Не передан userId");
-        }
-        long userId = Long.parseLong(header);
+    public List<ItemDto> findAll(@RequestHeader("X-Sharer-User-Id") long userId) {
         return itemService.findAllByOwner(userId);
     }
 
